@@ -15,7 +15,7 @@ class FreeHandler(angr.SimProcedure):
             free_map[free_ptr] = caller_address
         else:
             print(
-                "Potential UAF: %s is trying to free %s, which has already been freed by %s"
+                "Potential Double Free: %s is trying to free %s, which has already been freed by %s"
                 % (caller_address, free_ptr, free_map[free_ptr])
             )
 
