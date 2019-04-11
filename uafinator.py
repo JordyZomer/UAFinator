@@ -11,21 +11,33 @@ class FreeHandler(angr.SimProcedure):
         caller_address = self.state.addr
         free_ptr = self.state.regs.rdi
         print("Free called on: %s" % (free_ptr))
-        free_map[free_ptr] = caller_address
+        if not free_ptr in free_map:
+            free_map[free_ptr] = caller_address
+        else:
+            print(
+                "Potential UAF: %s is trying to free %s, which has already been freed by %s"
+                % (caller_address, free_ptr, free_map[free_ptr])
+            )
 
 
 def validate_read(state):
     region = state.inspect.mem_read_address
     if region in free_map:
         free_call = free_map.get(region)
-        print("%s read from memory freed by %s" % (region, free_call))
+        print(
+            "Potential UAF: %s read from memory freed by %s"
+            % (region, free_call)
+        )
 
 
 def validate_write(state):
     region = state.inspect.mem_write_address
     if region in free_map:
         free_call = free_map.get(region)
-        print("%s wrote to memory freed by %s" % (region, free_call))
+        print(
+            "Potential UAF: %s wrote to memory freed by %s"
+            % (region, free_call)
+        )
 
 
 project.hook_symbol("free", FreeHandler())
