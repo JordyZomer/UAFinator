@@ -10,4 +10,6 @@ When keeping track of those we have a callback on every memory (read|write) that
 
 - Check if the memory has been allocated again with a hook to allocation functions
 - Universal UAF detection
-- Check for double frees too
+- Check for double frees too (WIP)
+- Combat path exploration and path explosion
+- Generate testcases
