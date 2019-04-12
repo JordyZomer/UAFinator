@@ -9,7 +9,7 @@ free_map = {}
 class FreeHandler(angr.SimProcedure):
     def run(self):
         caller_address = self.state.addr
-        free_ptr = self.state.regs.rdi
+        free_ptr = str(self.state.regs.rdi)
         print("Free called on: %s" % (free_ptr))
         if not free_ptr in free_map:
             free_map[free_ptr] = caller_address
